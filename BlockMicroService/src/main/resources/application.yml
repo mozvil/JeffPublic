@@ -1,0 +1,34 @@
+server:
+  port: 8086
+
+eureka:
+    client:
+        service-url:
+            defaultZone: http://localhost:8001/eureka
+spring:
+    application:
+        name: blockMicroService
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://192.168.1.25:3306/forum1?useUnicode=true&characterEncoding=utf8&autoReconnect=true&failOverReadOnly=false
+        username: root
+        password: admin
+        initialization-mode: always
+        
+feign:
+  hystrix:
+    enabled: true
+
+mybatis:
+    configuration:
+        map-underscore-to-camel-case: true
+        use-generated-keys: true
+
+tm:
+    manager:
+        url: http://localhost:7000/tx/manager/
+
+logging:
+    level:
+        com:
+            codingapi: debug
