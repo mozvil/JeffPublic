@@ -1,5 +1,7 @@
 server:
   port: 8086
+  servlet:
+    context-path: UTF-8
 
 eureka:
     client:
@@ -32,3 +34,4 @@ logging:
     level:
         com:
             codingapi: debug
+            
