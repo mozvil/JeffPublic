@@ -146,7 +146,7 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 
                             Task task = ConditionUtils.getInstance().createTask(key);
 
-                            ScheduledFuture future = schedule(key, configReader.getTransactionNettyDelayTime());
+                            ScheduledFuture<?> future = schedule(key, configReader.getTransactionNettyDelayTime());
 
                             threadAwaitSend(task, txInfo, jsonObject.toJSONString());
 
@@ -233,7 +233,8 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
         final Task task = ConditionUtils.getInstance().createTask(key);
 
         threadPool.execute(new Runnable() {
-            @Override
+            @SuppressWarnings("static-access")
+			@Override
             public void run() {
                 while (!task.isAwait() && !Thread.currentThread().interrupted()) {
                     try {
@@ -250,7 +251,7 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
             }
         });
 
-        ScheduledFuture future = schedule(key, delay);
+        ScheduledFuture<?> future = schedule(key, delay);
 
         task.awaitTask();
 
@@ -271,7 +272,8 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
 
     private void threadAwaitSend(final Task task, final TxInfo txInfo, final String msg){
         threadPool.execute(new Runnable() {
-            @Override
+            @SuppressWarnings("static-access")
+			@Override
             public void run() {
                 while (!task.isAwait() && !Thread.currentThread().interrupted()) {
                     try {
@@ -298,8 +300,8 @@ public class TxManagerSenderServiceImpl implements TxManagerSenderService {
     }
 
 
-    private ScheduledFuture schedule(final String key, int delayTime) {
-        ScheduledFuture future = executorService.schedule(new Runnable() {
+    private ScheduledFuture<?> schedule(final String key, int delayTime) {
+        ScheduledFuture<?> future = executorService.schedule(new Runnable() {
             @Override
             public void run() {
                 Task task = ConditionUtils.getInstance().getTask(key);
